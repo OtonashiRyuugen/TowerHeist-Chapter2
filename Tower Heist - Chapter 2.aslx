@@ -8,6 +8,16 @@
     <firstpublished>2023</firstpublished>
     <gridmap />
     <respondtogridclicks />
+    <object name="Magic Wand">
+      <inherit name="editor_object" />
+      <castspell type="script">
+        if (game.pov.parent = Library) {
+        }
+        else {
+          msg ("It didnt seem to do anything...")
+        }
+      </castspell>
+    </object>
   </game>
   <object name="Entrance Hall">
     <inherit name="editor_room" />
@@ -188,6 +198,9 @@
         }
       </placebooks>
     </object>
+    <object name="Book Case">
+      <inherit name="editor_object" />
+    </object>
   </object>
   <object name="Dragon Room">
     <inherit name="editor_room" />
@@ -206,7 +219,9 @@
           set (Dragon Room, "loops", 3)
         }
         else if (Dragon Room.loops = 3) {
-          MakeObjectVisible (Coin)
+          if (not GetBoolean(Dragon Room, "Solved")) {
+            MakeObjectVisible (Coin)
+          }
           set (Dragon Room, "loops", 0)
         }
       }
@@ -233,13 +248,31 @@
     </onexit>
     <exit name="exitDragonRoom" alias="south" to="Upper Hallway">
       <inherit name="southdirection" />
-      <locked type="boolean">false</locked>
-      <visible type="boolean">false</visible>
+      <locked />
+      <visible />
+      <runscript />
+      <script type="script">
+        if (ListContains(ScopeVisible(), Necronomicon)) {
+          MakeObjectInvisible (Necronomicon)
+          msg ("The Necronomicon turned to dust as you exit the room. Must've been a fake.")
+        }
+        if (ListContains(ScopeVisible(), Bag of Sand)) {
+          msg ("The bag of sand dissapears, was it even real?")
+          MakeObjectInvisible (Bag of Sand)
+        }
+        if (ListContains(ScopeVisible(), Incense Stick)) {
+          msg ("The Incense Stick Ignites as you leave, the dragon smirking as if an admission of guilt.")
+          MakeObjectInvisible (Incense Stick)
+        }
+        MoveObject (player, Upper Hallway)
+      </script>
     </exit>
     <object name="Necronomicon">
       <inherit name="editor_object" />
       <visible type="boolean">false</visible>
       <take />
+      <feature_usegive />
+      <use />
     </object>
     <exit alias="northeast" to="Door to the Right">
       <inherit name="northeastdirection" />
@@ -251,16 +284,56 @@
       <inherit name="editor_object" />
       <visible type="boolean">false</visible>
       <take />
+      <feature_usegive />
+      <use />
     </object>
     <object name="Incense Stick">
       <inherit name="editor_object" />
       <visible type="boolean">false</visible>
       <take />
+      <feature_usegive />
+      <use />
     </object>
     <object name="Coin">
       <inherit name="editor_object" />
       <take />
       <visible type="boolean">false</visible>
+      <feature_usegive />
+      <use />
+    </object>
+    <object name="Caged Small Red Dragon">
+      <inherit name="editor_object" />
+      <feature_usegive />
+      <useon type="scriptdictionary">
+        <item key="Necronomicon">
+          msg ("You place the necronomicon in the cage with the dragon, who lets out a puff a flames, burning the necronomicon to dust. ")
+          MakeObjectInvisible (Necronomicon)
+          RemoveObject (Necronomicon)
+        </item>
+        <item key="Bag of Sand">
+          msg ("You place the Bag of Sand in the dragons cage, who immediatly shreds the bag to taters, spreading sand everywhere.")
+          MakeObjectInvisible (Bag of Sand)
+          RemoveObject (Bag of Sand)
+        </item>
+        <item key="Incense Stick">
+          msg ("As you bring the stick close to the dragon, it spurts out a small flame, igniting the incense stick. At least the room smells nice")
+          MakeObjectInvisible (Incense Stick)
+          RemoveObject (Incense Stick)
+        </item>
+        <item key="Coin">
+          msg ("The dragon gratiously accepts this gift. It pushes a small gem from under itself out onto the table for you to take, and the exit door clunks as it unlocks.")
+          MakeObjectVisible (Magic Gem)
+          MakeObjectInvisible (Coin)
+          SetObjectFlagOn (Dragon Room, "Solved")
+          UnlockExit (exitDragonRoom)
+          RemoveObject (Coin)
+        </item>
+      </useon>
+    </object>
+    <object name="Magic Gem">
+      <inherit name="editor_object" />
+      <visible type="boolean">false</visible>
+      <take />
     </object>
   </object>
   <verb>
@@ -279,6 +352,7 @@
       MoveObject (player, Dragon Room)
     </enter>
     <descprefix>You enter the</descprefix>
+    <attr name="grid_fill">Black</attr>
   </object>
   <object name="Door to the Left">
     <inherit name="editor_room" />
@@ -286,5 +360,11 @@
       MoveObject (player, Dragon Room)
     </enter>
     <descprefix>You enter</descprefix>
+    <attr name="grid_fill">Black</attr>
   </object>
+  <verb>
+    <property>castspell</property>
+    <pattern>cast spell</pattern>
+    <defaultexpression>"You can't cast spell " + object.article + "."</defaultexpression>
+  </verb>
 </asl>
