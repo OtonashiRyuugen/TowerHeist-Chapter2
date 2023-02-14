@@ -1,0 +1,102 @@
+<!--Saved by Quest 5.8.6836.13983-->
+<asl version="580">
+  <include ref="English.aslx" />
+  <include ref="Core.aslx" />
+  <game name="Tower Heist - Chapter 2">
+    <gameid>700d2105-72e7-4984-b6f0-41193c52e574</gameid>
+    <version>1.0</version>
+    <firstpublished>2023</firstpublished>
+    <gridmap />
+    <respondtogridclicks />
+  </game>
+  <object name="Entrance Hall">
+    <inherit name="editor_room" />
+    <isroom />
+    <description><![CDATA[{img:CH2_RM1.png}<br/>The Entrance Hall is quite grand and well kept in spite of the run down exterior.]]></description>
+    <descprefix>You are in</descprefix>
+    <object name="player">
+      <inherit name="editor_object" />
+      <inherit name="editor_player" />
+    </object>
+    <exit alias="up" to="Upper Hallway">
+      <inherit name="updirection" />
+    </exit>
+    <object name="Chair">
+      <inherit name="editor_object" />
+      <look>A decorative leather chair, looks sturdy enough to climb on.</look>
+      <standon type="script">
+        if (not GetBoolean(Chair, "moved")) {
+          MakeObjectVisible (Odd Key)
+          if (Got(Odd Key)) {
+            msg ("You climb onto the chair but see nothing of note")
+          }
+          else {
+            msg ("Upon clambering ontop of the chair, You can see an odd shaped key sitting atop the doorway.")
+          }
+        }
+        else if (GetBoolean(Chair, "moved")) {
+          if (Got(Odd Key)) {
+            msg ("You see nothing odd")
+          }
+          else {
+            AddToInventory (Odd Key)
+            msg ("You climb up and see an odd key. You pick it up.")
+          }
+        }
+      </standon>
+      <move type="script">
+        msg ("You move the chair.")
+        if (not GetBoolean(Chair, "moved")) {
+          SetObjectFlagOn (Chair, "moved")
+        }
+        else {
+          SetObjectFlagOff (Chair, "moved")
+        }
+      </move>
+    </object>
+    <object name="Odd Key">
+      <inherit name="editor_object" />
+      <take type="boolean">false</take>
+      <visible type="boolean">false</visible>
+      <takemsg>You cannot reach the key</takemsg>
+    </object>
+  </object>
+  <object name="Upper Hallway">
+    <inherit name="editor_room" />
+    <exit alias="down" to="Entrance Hall">
+      <inherit name="downdirection" />
+    </exit>
+    <exit alias="northwest" to="Study">
+      <inherit name="northwestdirection" />
+    </exit>
+    <exit alias="northeast" to="Library">
+      <inherit name="northeastdirection" />
+    </exit>
+    <exit alias="north" to="Dragon Room">
+      <inherit name="northdirection" />
+    </exit>
+  </object>
+  <object name="Study">
+    <inherit name="editor_room" />
+    <exit alias="southeast" to="Upper Hallway">
+      <inherit name="southeastdirection" />
+    </exit>
+  </object>
+  <object name="Library">
+    <inherit name="editor_room" />
+    <exit alias="southwest" to="Upper Hallway">
+      <inherit name="southwestdirection" />
+    </exit>
+  </object>
+  <object name="Dragon Room">
+    <inherit name="editor_room" />
+    <exit alias="south" to="Upper Hallway">
+      <inherit name="southdirection" />
+    </exit>
+  </object>
+  <verb>
+    <property>standon</property>
+    <pattern>stand on</pattern>
+    <defaultexpression>"You can't stand on " + object.article + "."</defaultexpression>
+  </verb>
+</asl>
