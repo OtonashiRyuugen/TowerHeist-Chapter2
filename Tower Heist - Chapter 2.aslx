@@ -41,6 +41,7 @@
           else {
             AddToInventory (Odd Key)
             msg ("You climb up and see an odd key. You pick it up.")
+            MakeObjectVisible (Odd Key)
           }
         }
       </standon>
@@ -59,6 +60,8 @@
       <take type="boolean">false</take>
       <visible type="boolean">false</visible>
       <takemsg>You cannot reach the key</takemsg>
+      <feature_usegive />
+      <use />
     </object>
   </object>
   <object name="Upper Hallway">
@@ -69,12 +72,25 @@
     <exit alias="northwest" to="Study">
       <inherit name="northwestdirection" />
     </exit>
-    <exit alias="northeast" to="Library">
+    <exit name="libraryDoor" alias="northeast" to="Library">
       <inherit name="northeastdirection" />
+      <locked />
+      <visible />
     </exit>
     <exit alias="north" to="Dragon Room">
       <inherit name="northdirection" />
     </exit>
+    <object name="Library Door Lock">
+      <inherit name="editor_object" />
+      <feature_usegive />
+      <useon type="scriptdictionary">
+        <item key="Odd Key">
+          UnlockExit (libraryDoor)
+          msg ("Library Door Unlocked")
+          MakeObjectInvisible (Odd Key)
+        </item>
+      </useon>
+    </object>
   </object>
   <object name="Study">
     <inherit name="editor_room" />
