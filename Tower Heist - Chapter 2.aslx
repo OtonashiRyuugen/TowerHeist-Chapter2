@@ -13,18 +13,24 @@
       <castspell type="script">
         if (game.pov.parent = Library) {
           HelperOpenObject (Book Case)
-          msg ("At last! The Real Necronomicon appears on the bookshelf. It was before your very eyes all along")
+          msg ("At last! The Real Necronomicon appears on the bookshelf. It was before your very eyes all along. A moment later the Wand disintegrates into dust. Looks like it worked just long enough!")
+          MakeObjectInvisible (Magic Wand)
         }
         else {
           msg ("It didnt seem to do anything...")
         }
       </castspell>
+      <inventoryverbs type="stringlist">
+        <value>Look at</value>
+      </inventoryverbs>
+      <drop type="boolean">false</drop>
+      <look>A magic wand! Use your new power carefully!</look>
     </object>
   </game>
   <object name="Entrance Hall">
     <inherit name="editor_room" />
     <isroom />
-    <description><![CDATA[{img:CH2_RM1.png}<br/>The Entrance Hall is quite grand and well kept in spite of the run down exterior.]]></description>
+    <description><![CDATA[{img:CH2_RM1.png}<br/>The Entrance Hall is quite grand and well kept in spite of the run down exterior. It seems warm and welcoming, though it shouldn't to you, being the theif you are.]]></description>
     <descprefix>You are in</descprefix>
     <object name="player">
       <inherit name="editor_object" />
@@ -88,16 +94,19 @@
       <takemsg>You cannot reach the key</takemsg>
       <feature_usegive />
       <use />
+      <look>An odd shaped key. It looks like it unlocks something!</look>
     </object>
     <object name="Leather Wrap">
       <inherit name="editor_object" />
       <visible type="boolean">false</visible>
       <feature_usegive />
       <use />
+      <look>A strip of leather. You wonder what you could do with it.</look>
     </object>
   </object>
   <object name="Upper Hallway">
     <inherit name="editor_room" />
+    <description>A normal hallway at the top of the stairs, nothing much of note here, but oh the places you can go from here!</description>
     <exit alias="down" to="Entrance Hall">
       <inherit name="downdirection" />
     </exit>
@@ -120,12 +129,14 @@
           UnlockExit (libraryDoor)
           msg ("Library Door Unlocked")
           MakeObjectInvisible (Odd Key)
+          MakeObjectInvisible (Library Door Lock)
         </item>
       </useon>
     </object>
   </object>
   <object name="Study">
     <inherit name="editor_room" />
+    <description><![CDATA[{img:CH2_RM3.png}<br/>A quant study, there are several magical look objects strewn about the room.]]></description>
     <exit alias="southeast" to="Upper Hallway">
       <inherit name="southeastdirection" />
     </exit>
@@ -134,6 +145,7 @@
       <take />
       <feature_usegive />
       <use />
+      <look>A pretty dull knife, that looks just sharp enough to make one cut, before it would be useless.</look>
     </object>
     <object name="Chest">
       <inherit name="editor_object" />
@@ -148,6 +160,7 @@
       <autounlock type="boolean">false</autounlock>
       <unlockmessage type="string"></unlockmessage>
       <lockmessage type="string"></lockmessage>
+      <look>An ornate chest. It appears to be operated magically somehow</look>
       <object name="Hardwood Stick">
         <inherit name="editor_object" />
         <take />
@@ -174,13 +187,19 @@
             }
           </item>
         </useon>
+        <look>A hardwood stick. It looks like those fake wands they sell at the local flea market to kids.</look>
       </object>
+    </object>
+    <object name="Desk">
+      <inherit name="editor_object" />
+      <look><![CDATA[A desk, probably used for studying the dark arts! On the desk lays an open book. The book describes how you need three things to craft a true wand. <br/>1. A shaft of sturdy material<br/>2. A covering, to protect ones hands against backlash<br/>3. A magic core.]]></look>
     </object>
   </object>
   <object name="Library">
     <inherit name="editor_room" />
     <enter type="script">
     </enter>
+    <description><![CDATA[{img:CH2_RM2.png}<br/>A library full of books. A bookcase stands out in particular.]]></description>
     <exit alias="southwest" to="Upper Hallway">
       <inherit name="southwestdirection" />
     </exit>
@@ -224,6 +243,7 @@
           }
         }
       </placebooks>
+      <look>A set of books that seem to stick out from the rest. Wonder what they could do?</look>
     </object>
     <object name="Book Case">
       <inherit name="editor_object" />
@@ -237,6 +257,7 @@
       <onopen type="script">
         MakeObjectVisible (Real Necronomicon)
       </onopen>
+      <look>A bookcase, something seems off about it.</look>
       <object name="Real Necronomicon">
         <inherit name="editor_object" />
         <visible type="boolean">false</visible>
@@ -245,6 +266,7 @@
           msg ("You pick up the Necronomicon. You then hear an audible Clank, before the floor drops from beneath you, dropping you to the catacombs. END OF CHAPTER 2")
           finish
         </take>
+        <look>This is it, what you have been after this whole time!</look>
       </object>
     </object>
   </object>
@@ -292,6 +314,7 @@
         MakeObjectInvisible (Coin)
       }
     </onexit>
+    <description><![CDATA[{img:CH2_RM4.png}<br/>A strange feeling room, there with only a table and a small dragon in a cage. ]]></description>
     <exit name="exitDragonRoom" alias="south" to="Upper Hallway">
       <inherit name="southdirection" />
       <locked />
@@ -319,6 +342,7 @@
       <take />
       <feature_usegive />
       <use />
+      <look>Is this it? Something doesnt feel right about it.</look>
     </object>
     <exit alias="northeast" to="Door to the Right">
       <inherit name="northeastdirection" />
@@ -332,6 +356,7 @@
       <take />
       <feature_usegive />
       <use />
+      <look>A weighty bag of sand.</look>
     </object>
     <object name="Incense Stick">
       <inherit name="editor_object" />
@@ -339,6 +364,7 @@
       <take />
       <feature_usegive />
       <use />
+      <look>A stick of pleasent scented incense. </look>
     </object>
     <object name="Coin">
       <inherit name="editor_object" />
@@ -346,6 +372,7 @@
       <visible type="boolean">false</visible>
       <feature_usegive />
       <use />
+      <look>A small gold coin. Maybe you could try biting it?</look>
     </object>
     <object name="Caged Small Red Dragon">
       <inherit name="editor_object" />
@@ -375,6 +402,7 @@
           RemoveObject (Coin)
         </item>
       </useon>
+      <look>A small red dragon trapped in a cage. Maybe it accepts offerings?</look>
     </object>
     <object name="Magic Gem">
       <inherit name="editor_object" />
@@ -382,6 +410,7 @@
       <take />
       <feature_usegive />
       <use />
+      <look>A shining gem, it feels like it has power to it.</look>
     </object>
   </object>
   <verb>
