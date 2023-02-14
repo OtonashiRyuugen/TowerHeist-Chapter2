@@ -54,6 +54,20 @@
           SetObjectFlagOff (Chair, "moved")
         }
       </move>
+      <feature_usegive />
+      <useon type="scriptdictionary">
+        <item key="Knife">
+          if (Got(Leather Wrap)) {
+            msg ("No need to mangle the chair more")
+          }
+          else {
+            AddToInventory (Leather Wrap)
+            MakeObjectVisible (Leather Wrap)
+            msg ("You cut a strip of Leather from the chair. The Knife seems to dull to use more, so you drop it.")
+            MakeObjectInvisible (Knife)
+          }
+        </item>
+      </useon>
     </object>
     <object name="Odd Key">
       <inherit name="editor_object" />
@@ -62,6 +76,10 @@
       <takemsg>You cannot reach the key</takemsg>
       <feature_usegive />
       <use />
+    </object>
+    <object name="Leather Wrap">
+      <inherit name="editor_object" />
+      <visible type="boolean">false</visible>
     </object>
   </object>
   <object name="Upper Hallway">
@@ -97,6 +115,12 @@
     <exit alias="southeast" to="Upper Hallway">
       <inherit name="southeastdirection" />
     </exit>
+    <object name="Knife">
+      <inherit name="editor_object" />
+      <take />
+      <feature_usegive />
+      <use />
+    </object>
   </object>
   <object name="Library">
     <inherit name="editor_room" />
