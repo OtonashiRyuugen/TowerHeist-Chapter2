@@ -127,6 +127,45 @@
     <exit alias="southwest" to="Upper Hallway">
       <inherit name="southwestdirection" />
     </exit>
+    <object name="Books">
+      <inherit name="editor_object" />
+      <take />
+      <placebooks type="script">
+        titles = NewStringDictionary()
+        dictionary add (titles, "1", "Dusk Compendium - An Encyclopedia of Creatures in the Dark")
+        dictionary add (titles, "2", "Dawn of the Dead - A Beginners Guide to Necromancy")
+        dictionary add (titles, "3", "Midnight Stories - Tales to Frighten Travelers")
+        set (Books, "titles", titles)
+        ShowMenu ("What Book to Place First?", Books.titles, false) {
+          set (Books, "book1", result)
+          dictionary remove (Books.titles, Books.book1)
+          ShowMenu ("What Book to Place Second?", Books.titles, false) {
+            set (Books, "book2", result)
+            dictionary remove (Books.titles, Books.book2)
+            ShowMenu ("What Book to Place Last?", Books.titles, false) {
+              set (Books, "book3", result)
+              dictionary remove (Books.titles, Books.book3)
+              if (Books.book1 = "2") {
+                if (Books.book2 = "1") {
+                  if (Books.book3 = "3") {
+                    msg ("You hear a clunk in the study")
+                  }
+                  else {
+                    msg ("Nothing happened")
+                  }
+                }
+                else {
+                  msg ("Nothing happened")
+                }
+              }
+              else {
+                msg ("Nothing happened")
+              }
+            }
+          }
+        }
+      </placebooks>
+    </object>
   </object>
   <object name="Dragon Room">
     <inherit name="editor_room" />
@@ -138,5 +177,10 @@
     <property>standon</property>
     <pattern>stand on</pattern>
     <defaultexpression>"You can't stand on " + object.article + "."</defaultexpression>
+  </verb>
+  <verb>
+    <property>placebooks</property>
+    <pattern>place books</pattern>
+    <defaultexpression>"You can't place books " + object.article + "."</defaultexpression>
   </verb>
 </asl>
