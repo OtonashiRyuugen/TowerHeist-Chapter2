@@ -121,9 +121,29 @@
       <feature_usegive />
       <use />
     </object>
+    <object name="Chest">
+      <inherit name="editor_object" />
+      <inherit name="container_closed" />
+      <inherit name="container_lockable" />
+      <feature_container />
+      <open type="boolean">false</open>
+      <hidechildren type="boolean">false</hidechildren>
+      <listchildren />
+      <close type="boolean">false</close>
+      <listchildrenprefix>It contains</listchildrenprefix>
+      <autounlock type="boolean">false</autounlock>
+      <unlockmessage type="string"></unlockmessage>
+      <lockmessage type="string"></lockmessage>
+      <object name="Hardwood Stick">
+        <inherit name="editor_object" />
+        <take />
+      </object>
+    </object>
   </object>
   <object name="Library">
     <inherit name="editor_room" />
+    <enter type="script">
+    </enter>
     <exit alias="southwest" to="Upper Hallway">
       <inherit name="southwestdirection" />
     </exit>
@@ -149,6 +169,8 @@
                 if (Books.book2 = "1") {
                   if (Books.book3 = "3") {
                     msg ("You hear a clunk in the study")
+                    MakeObjectInvisible (Books)
+                    HelperOpenObject (Chest)
                   }
                   else {
                     msg ("Nothing happened")
@@ -169,9 +191,77 @@
   </object>
   <object name="Dragon Room">
     <inherit name="editor_room" />
-    <exit alias="south" to="Upper Hallway">
+    <enter type="script"><![CDATA[
+      if (Dragon Room.loops < 5) {
+        if (Dragon Room.loops = 0) {
+          MakeObjectVisible (Necronomicon)
+          set (Dragon Room, "loops", 1)
+        }
+        else if (Dragon Room.loops = 1) {
+          MakeObjectVisible (Bag of Sand)
+          set (Dragon Room, "loops", 2)
+        }
+        else if (Dragon Room.loops = 2) {
+          MakeObjectVisible (Incense Stick)
+          set (Dragon Room, "loops", 3)
+        }
+        else if (Dragon Room.loops = 3) {
+          MakeObjectVisible (Coin)
+          set (Dragon Room, "loops", 0)
+        }
+      }
+    ]]></enter>
+    <beforefirstenter type="script">
+    </beforefirstenter>
+    <firstenter type="script">
+      set (this, "loops", 0)
+      LockExit (exitDragonRoom)
+    </firstenter>
+    <onexit type="script">
+      if (not Got(Necronomicon)) {
+        MakeObjectInvisible (Necronomicon)
+      }
+      if (not Got(Bag of Sand)) {
+        MakeObjectInvisible (Bag of Sand)
+      }
+      if (not Got(Incense Stick)) {
+        MakeObjectInvisible (Incense Stick)
+      }
+      if (not Got(Coin)) {
+        MakeObjectInvisible (Coin)
+      }
+    </onexit>
+    <exit name="exitDragonRoom" alias="south" to="Upper Hallway">
       <inherit name="southdirection" />
+      <locked type="boolean">false</locked>
+      <visible type="boolean">false</visible>
     </exit>
+    <object name="Necronomicon">
+      <inherit name="editor_object" />
+      <visible type="boolean">false</visible>
+      <take />
+    </object>
+    <exit alias="northeast" to="Door to the Right">
+      <inherit name="northeastdirection" />
+    </exit>
+    <exit alias="northwest" to="Door to the Left">
+      <inherit name="northwestdirection" />
+    </exit>
+    <object name="Bag of Sand">
+      <inherit name="editor_object" />
+      <visible type="boolean">false</visible>
+      <take />
+    </object>
+    <object name="Incense Stick">
+      <inherit name="editor_object" />
+      <visible type="boolean">false</visible>
+      <take />
+    </object>
+    <object name="Coin">
+      <inherit name="editor_object" />
+      <take />
+      <visible type="boolean">false</visible>
+    </object>
   </object>
   <verb>
     <property>standon</property>
@@ -183,4 +273,18 @@
     <pattern>place books</pattern>
     <defaultexpression>"You can't place books " + object.article + "."</defaultexpression>
   </verb>
+  <object name="Door to the Right">
+    <inherit name="editor_room" />
+    <enter type="script">
+      MoveObject (player, Dragon Room)
+    </enter>
+    <descprefix>You enter the</descprefix>
+  </object>
+  <object name="Door to the Left">
+    <inherit name="editor_room" />
+    <enter type="script">
+      MoveObject (player, Dragon Room)
+    </enter>
+    <descprefix>You enter</descprefix>
+  </object>
 </asl>
