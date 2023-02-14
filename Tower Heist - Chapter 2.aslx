@@ -12,6 +12,8 @@
       <inherit name="editor_object" />
       <castspell type="script">
         if (game.pov.parent = Library) {
+          HelperOpenObject (Book Case)
+          msg ("At last! The Real Necronomicon appears on the bookshelf. It was before your very eyes all along")
         }
         else {
           msg ("It didnt seem to do anything...")
@@ -90,6 +92,8 @@
     <object name="Leather Wrap">
       <inherit name="editor_object" />
       <visible type="boolean">false</visible>
+      <feature_usegive />
+      <use />
     </object>
   </object>
   <object name="Upper Hallway">
@@ -147,6 +151,29 @@
       <object name="Hardwood Stick">
         <inherit name="editor_object" />
         <take />
+        <feature_usegive />
+        <useon type="scriptdictionary">
+          <item key="Magic Gem">
+            msg ("The gem infuses itself with the stick, feels slightly magical now!")
+            SetObjectFlagOn (Hardwood Stick, "gemmed")
+            MakeObjectInvisible (Magic Gem)
+            if (GetBoolean(Hardwood Stick, "wrapped")) {
+              msg ("Poof, it magically transformed into a magic wand!")
+              MakeObjectInvisible (Hardwood Stick)
+              AddToInventory (Magic Wand)
+            }
+          </item>
+          <item key="Leather Wrap">
+            msg ("You bind the stick with the leather.")
+            SetObjectFlagOn (Hardwood Stick, "wrapped")
+            MakeObjectInvisible (Leather Wrap)
+            if (GetBoolean(Hardwood Stick, "gemmed")) {
+              msg ("Poof, it magically transformed into a magic wand!")
+              MakeObjectInvisible (Hardwood Stick)
+              AddToInventory (Magic Wand)
+            }
+          </item>
+        </useon>
       </object>
     </object>
   </object>
@@ -200,6 +227,25 @@
     </object>
     <object name="Book Case">
       <inherit name="editor_object" />
+      <inherit name="container_open" />
+      <feature_container />
+      <open type="boolean">false</open>
+      <close type="boolean">false</close>
+      <isopen type="boolean">false</isopen>
+      <hidechildren type="boolean">false</hidechildren>
+      <listchildren type="boolean">false</listchildren>
+      <onopen type="script">
+        MakeObjectVisible (Real Necronomicon)
+      </onopen>
+      <object name="Real Necronomicon">
+        <inherit name="editor_object" />
+        <visible type="boolean">false</visible>
+        <feature_startscript />
+        <take type="script">
+          msg ("You pick up the Necronomicon. You then hear an audible Clank, before the floor drops from beneath you, dropping you to the catacombs. END OF CHAPTER 2")
+          finish
+        </take>
+      </object>
     </object>
   </object>
   <object name="Dragon Room">
@@ -334,6 +380,8 @@
       <inherit name="editor_object" />
       <visible type="boolean">false</visible>
       <take />
+      <feature_usegive />
+      <use />
     </object>
   </object>
   <verb>
