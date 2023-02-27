@@ -8,8 +8,14 @@
     <firstpublished>2023</firstpublished>
     <gridmap />
     <respondtogridclicks />
+    <author>Dylan VanderWal</author>
     <object name="Magic Wand">
       <inherit name="editor_object" />
+      <inventoryverbs type="stringlist">
+        <value>Look at</value>
+      </inventoryverbs>
+      <drop type="boolean">false</drop>
+      <look>A magic wand! Use your new power carefully!</look>
       <castspell type="script">
         if (game.pov.parent = Library) {
           HelperOpenObject (Book Case)
@@ -20,18 +26,14 @@
           msg ("It didnt seem to do anything...")
         }
       </castspell>
-      <inventoryverbs type="stringlist">
-        <value>Look at</value>
-      </inventoryverbs>
-      <drop type="boolean">false</drop>
-      <look>A magic wand! Use your new power carefully!</look>
     </object>
   </game>
   <object name="Entrance Hall">
     <inherit name="editor_room" />
     <isroom />
-    <description><![CDATA[{img:CH2_RM1.png}<br/>The Entrance Hall is quite grand and well kept in spite of the run down exterior. It seems warm and welcoming, though it shouldn't to you, being the theif you are.]]></description>
+    <description><![CDATA[{img:CH2_RM1.png}<br/>The Entrance Hall is quite grand and well kept in spite of the run down exterior. It seems warm and welcoming, though it shouldn't to you, being the theif you are.<br/>]]></description>
     <descprefix>You are in</descprefix>
+    <usedefaultprefix />
     <object name="player">
       <inherit name="editor_object" />
       <inherit name="editor_player" />
@@ -42,6 +44,7 @@
     <object name="Chair">
       <inherit name="editor_object" />
       <look>A decorative leather chair, looks sturdy enough to climb on.</look>
+      <feature_usegive />
       <standon type="script">
         if (not GetBoolean(Chair, "moved")) {
           MakeObjectVisible (Odd Key)
@@ -72,7 +75,6 @@
           SetObjectFlagOff (Chair, "moved")
         }
       </move>
-      <feature_usegive />
       <useon type="scriptdictionary">
         <item key="Knife">
           if (Got(Leather Wrap)) {
@@ -94,14 +96,14 @@
       <takemsg>You cannot reach the key</takemsg>
       <feature_usegive />
       <use />
-      <look>An odd shaped key. It looks like it unlocks something!</look>
+      <look><![CDATA[{img:CH2_RM1_OB1.png}<br/>An odd shaped key. It looks like it unlocks something!]]></look>
     </object>
     <object name="Leather Wrap">
       <inherit name="editor_object" />
       <visible type="boolean">false</visible>
       <feature_usegive />
       <use />
-      <look>A strip of leather. You wonder what you could do with it.</look>
+      <look><![CDATA[{img:CH2_RM1_OB2.png}<br/>A strip of leather. You wonder what you could do with it.]]></look>
     </object>
   </object>
   <object name="Upper Hallway">
@@ -145,7 +147,7 @@
       <take />
       <feature_usegive />
       <use />
-      <look>A pretty dull knife, that looks just sharp enough to make one cut, before it would be useless.</look>
+      <look>A pretty dull knife. It looks just sharp enough to make one cut, before it would be useless.</look>
     </object>
     <object name="Chest">
       <inherit name="editor_object" />
@@ -160,11 +162,12 @@
       <autounlock type="boolean">false</autounlock>
       <unlockmessage type="string"></unlockmessage>
       <lockmessage type="string"></lockmessage>
-      <look>An ornate chest. It appears to be operated magically somehow</look>
+      <look>An ornate chest. It appears to be operated magically somehow.</look>
       <object name="Hardwood Stick">
         <inherit name="editor_object" />
         <take />
         <feature_usegive />
+        <look><![CDATA[{img:CH2_RM3_OB2.png}<br/>A hardwood stick. It looks like those fake wands they sell at the local flea market to kids.]]></look>
         <useon type="scriptdictionary">
           <item key="Magic Gem">
             msg ("The gem infuses itself with the stick, feels slightly magical now!")
@@ -187,7 +190,6 @@
             }
           </item>
         </useon>
-        <look>A hardwood stick. It looks like those fake wands they sell at the local flea market to kids.</look>
       </object>
     </object>
     <object name="Desk">
@@ -197,15 +199,16 @@
   </object>
   <object name="Library">
     <inherit name="editor_room" />
+    <description><![CDATA[{img:CH2_RM2.png}<br/>A library full of books. A bookcase stands out in particular.]]></description>
     <enter type="script">
     </enter>
-    <description><![CDATA[{img:CH2_RM2.png}<br/>A library full of books. A bookcase stands out in particular.]]></description>
     <exit alias="southwest" to="Upper Hallway">
       <inherit name="southwestdirection" />
     </exit>
     <object name="Books">
       <inherit name="editor_object" />
       <take />
+      <look><![CDATA[{img:CH2_RM2_OB1.png}<br/>A set of books that seem to stick out from the rest. Wonder what they could do?]]></look>
       <placebooks type="script">
         titles = NewStringDictionary()
         dictionary add (titles, "1", "Dusk Compendium - An Encyclopedia of Creatures in the Dark")
@@ -243,7 +246,6 @@
           }
         }
       </placebooks>
-      <look>A set of books that seem to stick out from the rest. Wonder what they could do?</look>
     </object>
     <object name="Book Case">
       <inherit name="editor_object" />
@@ -254,43 +256,70 @@
       <isopen type="boolean">false</isopen>
       <hidechildren type="boolean">false</hidechildren>
       <listchildren type="boolean">false</listchildren>
+      <look>A bookcase, something seems off about it.</look>
       <onopen type="script">
         MakeObjectVisible (Real Necronomicon)
       </onopen>
-      <look>A bookcase, something seems off about it.</look>
       <object name="Real Necronomicon">
         <inherit name="editor_object" />
         <visible type="boolean">false</visible>
         <feature_startscript />
+        <look><![CDATA[{img:CH2_RM2_OB2.png}<br/>This is it, what you have been after this whole time!]]></look>
         <take type="script">
           msg ("You pick up the Necronomicon. You then hear an audible Clank, before the floor drops from beneath you, dropping you to the catacombs. END OF CHAPTER 2")
           finish
         </take>
-        <look>This is it, what you have been after this whole time!</look>
       </object>
     </object>
   </object>
   <object name="Dragon Room">
     <inherit name="editor_room" />
+    <description><![CDATA[{img:CH2_RM4.png}<br/>A strange feeling room, there with only a table and a small dragon in a cage. ]]></description>
     <enter type="script"><![CDATA[
       if (Dragon Room.loops < 5) {
         if (Dragon Room.loops = 0) {
           MakeObjectVisible (Necronomicon)
           set (Dragon Room, "loops", 1)
+          if (ListContains(ScopeVisible(), Necronomicon)) {
+            if (not Got(Necronomicon)) {
+              msg ("There sits a {object:Necronomicon} on the desk. It couldn't be that easy could it?")
+            }
+          }
         }
         else if (Dragon Room.loops = 1) {
           MakeObjectVisible (Bag of Sand)
           set (Dragon Room, "loops", 2)
+          if (ListContains(ScopeVisible(), Bag of Sand)) {
+            if (not Got(Bag of Sand)) {
+              msg ("Huh, wierd, now there sits a {object:Bag of Sand} on the desk.")
+            }
+          }
         }
         else if (Dragon Room.loops = 2) {
           MakeObjectVisible (Incense Stick)
           set (Dragon Room, "loops", 3)
+          if (ListContains(ScopeVisible(), Incense Stick)) {
+            if (not Got(Incense Stick)) {
+              msg ("Oh look, now there is a {object:Incense Stick} on the desk.")
+            }
+          }
         }
         else if (Dragon Room.loops = 3) {
+          set (Dragon Room, "loops", 0)
           if (not GetBoolean(Dragon Room, "Solved")) {
             MakeObjectVisible (Coin)
+            if (not Got(Coin)) {
+              msg ("Now sits a nice shiny {object:Coin} on the desk. ")
+            }
           }
-          set (Dragon Room, "loops", 0)
+        }
+        else {
+          if (not GetBoolean(Dragon Room, "Solved")) {
+            MakeObjectVisible (Coin)
+            if (not Got(Coin)) {
+              msg ("Now sits a nice shiny {object:Coin} on the desk. ")
+            }
+          }
         }
       }
     ]]></enter>
@@ -299,6 +328,7 @@
     <firstenter type="script">
       set (this, "loops", 0)
       LockExit (exitDragonRoom)
+      msg ("You hear a clunk as the door closes behind you.")
     </firstenter>
     <onexit type="script">
       if (not Got(Necronomicon)) {
@@ -314,7 +344,6 @@
         MakeObjectInvisible (Coin)
       }
     </onexit>
-    <description><![CDATA[{img:CH2_RM4.png}<br/>A strange feeling room, there with only a table and a small dragon in a cage. ]]></description>
     <exit name="exitDragonRoom" alias="south" to="Upper Hallway">
       <inherit name="southdirection" />
       <locked />
@@ -324,14 +353,17 @@
         if (ListContains(ScopeVisible(), Necronomicon)) {
           MakeObjectInvisible (Necronomicon)
           msg ("The Necronomicon turned to dust as you exit the room. Must've been a fake.")
+          RemoveObject (Necronomicon)
         }
         if (ListContains(ScopeVisible(), Bag of Sand)) {
           msg ("The bag of sand dissapears, was it even real?")
           MakeObjectInvisible (Bag of Sand)
+          RemoveObject (Bag of Sand)
         }
         if (ListContains(ScopeVisible(), Incense Stick)) {
           msg ("The Incense Stick Ignites as you leave, the dragon smirking as if an admission of guilt.")
           MakeObjectInvisible (Incense Stick)
+          RemoveObject (Incense Stick)
         }
         MoveObject (player, Upper Hallway)
       </script>
@@ -342,7 +374,7 @@
       <take />
       <feature_usegive />
       <use />
-      <look>Is this it? Something doesnt feel right about it.</look>
+      <look><![CDATA[{img:CH2_RM4_OB1.png}<br/>Is this it? Something doesnt feel right about it.]]></look>
     </object>
     <exit alias="northeast" to="Door to the Right">
       <inherit name="northeastdirection" />
@@ -356,7 +388,7 @@
       <take />
       <feature_usegive />
       <use />
-      <look>A weighty bag of sand.</look>
+      <look><![CDATA[{img:CH2_RM4_OB2.png}<br/>A weighty bag of sand.]]></look>
     </object>
     <object name="Incense Stick">
       <inherit name="editor_object" />
@@ -364,7 +396,7 @@
       <take />
       <feature_usegive />
       <use />
-      <look>A stick of pleasent scented incense. </look>
+      <look><![CDATA[{img:CH2_RM4_OB3.png}<br/>A stick of pleasent scented incense. ]]></look>
     </object>
     <object name="Coin">
       <inherit name="editor_object" />
@@ -372,11 +404,12 @@
       <visible type="boolean">false</visible>
       <feature_usegive />
       <use />
-      <look>A small gold coin. Maybe you could try biting it?</look>
+      <look><![CDATA[{img:CH2_RM4_OB4.png}<br/>A small gold coin. Maybe you could try biting it?]]></look>
     </object>
     <object name="Caged Small Red Dragon">
       <inherit name="editor_object" />
       <feature_usegive />
+      <look>A small red dragon trapped in a cage. Maybe it accepts offerings?</look>
       <useon type="scriptdictionary">
         <item key="Necronomicon">
           msg ("You place the necronomicon in the cage with the dragon, who lets out a puff a flames, burning the necronomicon to dust. ")
@@ -402,7 +435,6 @@
           RemoveObject (Coin)
         </item>
       </useon>
-      <look>A small red dragon trapped in a cage. Maybe it accepts offerings?</look>
     </object>
     <object name="Magic Gem">
       <inherit name="editor_object" />
@@ -410,7 +442,7 @@
       <take />
       <feature_usegive />
       <use />
-      <look>A shining gem, it feels like it has power to it.</look>
+      <look><![CDATA[{img:CH2_RM4_OB5.png}<br/>A shining gem, it feels like it has power to it.]]></look>
     </object>
   </object>
   <verb>
@@ -421,27 +453,27 @@
   <verb>
     <property>placebooks</property>
     <pattern>place books</pattern>
-    <defaultexpression>"You can't place books " + object.article + "."</defaultexpression>
+    <defaultexpression>"You can't place books in " + object.article + "."</defaultexpression>
   </verb>
   <object name="Door to the Right">
     <inherit name="editor_room" />
+    <descprefix>You enter the</descprefix>
+    <attr name="grid_fill">Black</attr>
     <enter type="script">
       MoveObject (player, Dragon Room)
     </enter>
-    <descprefix>You enter the</descprefix>
-    <attr name="grid_fill">Black</attr>
   </object>
   <object name="Door to the Left">
     <inherit name="editor_room" />
+    <descprefix>You enter</descprefix>
+    <attr name="grid_fill">Black</attr>
     <enter type="script">
       MoveObject (player, Dragon Room)
     </enter>
-    <descprefix>You enter</descprefix>
-    <attr name="grid_fill">Black</attr>
   </object>
   <verb>
     <property>castspell</property>
     <pattern>cast spell</pattern>
-    <defaultexpression>"You can't cast spell " + object.article + "."</defaultexpression>
+    <defaultexpression>"You can't cast spell on " + object.article + "."</defaultexpression>
   </verb>
 </asl>
